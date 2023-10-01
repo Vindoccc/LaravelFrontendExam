@@ -1,8 +1,8 @@
 @extends('employee.layout')
 @section('content')
  
-<div class="card">
-  <div class="card-header">Contactus Page</div>
+<div class="card" style="margin-top: 5%">
+  <div class="card-header">Employee Page</div>
   <div class="card-body">
       
       <form action="{{ url('employee/' .$employees->id) }}" method="post">
@@ -17,11 +17,13 @@
         <label>Company</label></br>
         <input type="text" name="company" id="company" value="{{$employees->company}}" class="form-control"></br>
         <label>Phone</label></br>
-        <input type="text" name="phone" id="phone" value="{{$employees->phone}}" class="form-control"></br>
+        <input type="number" name="phone" id="phone" value="{{$employees->phone}}" class="form-control" maxlength = "11" 
+        oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+        onkeydown="javascript: return event.keyCode == 69 ? false : true"/></br>
         <input type="submit" value="Update" class="btn btn-success"></br>
     </form>
    
   </div>
 </div>
  
-@stop
+@endsection

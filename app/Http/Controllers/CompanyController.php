@@ -6,11 +6,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Company;
-use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
-class EmployeeController extends Controller
+class CompanyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +18,8 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::All();
-        return view ('employee.index')->with('employees', $employees);
+        $companies=Company::All();
+        return view('company.index')->with('companies', $companies);
     }
 
     /**
@@ -30,8 +29,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $companies = Company::All();
-        return view('employee.create', compact('companies'));
+        return view('company.create');
     }
 
     /**
@@ -42,9 +40,18 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->all();
-        Employee::create($input);
-        return redirect('employee')->with('flash_message', 'Employee Added!');
+        $size = $request->file('logo')->getSize();
+        $name = $request->file('logo')->getClientOriginalName();
+
+        $request -> file('logo')->storeAs('public/images/', $name);
+        $companies = new Company();
+        $companies->company_name = $request -> company_name;
+        $companies->email = $request -> email;
+        $companies->name = $name;
+        $companies->size = $size;
+        $companies->website = $request -> website;
+        $companies->save();
+        return redirect('company')->with('flash_message', 'Company Added!');
     }
 
     /**
@@ -55,8 +62,8 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::find($id);
-        return view('employee.edit')->with('employees', $employee);
+        $companies=Company::find($id);
+        return view('company.edit')->with('companies', $companies);
     }
 
     /**
@@ -68,10 +75,10 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $employee = Employee::find($id);
+        $companies=Company::find($id);
         $input = $request->all();
-        $employee->update($input);
-        return redirect('employee')->with('flash_message', 'employee Updated!');  
+        $companies->update($input);
+        return redirect('company')->with('flash_message', 'Company Updated!');
     }
 
     /**
@@ -82,7 +89,8 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        Employee::destroy($id);
-        return redirect('employee')->with('flash_message', 'employee deleted!'); 
+        $companies=Company::find($id);
+        $companies->delete();
+        return redirect('company')->with('flash_message', 'Company Deleted!');
     }
 }

@@ -17,8 +17,8 @@
                         </a>
                         <br/>
                         <br/>
-                        <div class="table-responsive">
-                            <table id="example1" class="table">
+                        <div class="card-body">
+                            <table id="example1" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>First Name</th>
@@ -51,9 +51,6 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                            <div class="d-flex">
-                                {{ $employees->links() }}
-                            </div>
                         </div>
  
                     </div>
